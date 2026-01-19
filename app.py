@@ -20,7 +20,7 @@ from langchain_core.prompts import ChatPromptTemplate
 # Load .env
 # -----------------------------------------------------------
 load_dotenv()
-HF_TOKEN = os.getenv("HF_TOKEN")
+HF_TOKEN = st.secrets("HF_TOKEN")
 
 # -----------------------------------------------------------
 # Page Setup
@@ -251,3 +251,4 @@ st.markdown("""
         Built with ❤️ using Streamlit, FAISS, HuggingFace & LangChain.
     </p>
 """, unsafe_allow_html=True)
+
