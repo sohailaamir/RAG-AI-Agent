@@ -1,9 +1,29 @@
 
 import os
-import re
-import numpy as np
 import streamlit as st
 from dotenv import load_dotenv
+import numpy as np
+import re
+
+# Load .env locally (has no effect on Streamlit Cloud unless you also add secrets)
+load_dotenv()
+
+# 1) Try Streamlit Secrets (Cloud) → 2) fallback to env (local)
+HF_TOKEN = None
+try:
+    if "HF_TOKEN" in st.secrets:
+        HF_TOKEN = st.secrets["HF_TOKEN"]   # dict-like (NOT callable)
+except Exception:
+    pass
+
+if not HF_TOKEN:
+    HF_TOKEN = os.getenv("HF_TOKEN")        # .env or system env (local dev)
+
+# Guard: stop early with a friendly error if still missing
+if not HF_TOKEN:
+    st.error("🔐 HF_TOKEN not found. Add it in Streamlit Secrets or a local .env.")
+    st.stop()
+
 
 # LangChain + tools
 from langchain_community.document_loaders import PyPDFLoader
@@ -251,6 +271,7 @@ st.markdown("""
         Built with ❤️ using Streamlit, FAISS, HuggingFace & LangChain.
     </p>
 """, unsafe_allow_html=True)
+
 
 
 
